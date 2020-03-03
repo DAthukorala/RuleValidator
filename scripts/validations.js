@@ -32,6 +32,8 @@
                 rule.targetIds.forEach(targetId => {
                     checkForControlRequiredValidity.call(this, targetId);
                 });
+            } else {
+                this.validControlIds = this.validControlIds.concat(rule.targetIds);
             }
         });
     }
