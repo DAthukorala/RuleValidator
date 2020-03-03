@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>mandatory text box when check box group is checked</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="scripts/validations.js"></script>
+    <style>
+        div {
+            border: 1px solid black;
+            width: 50%;
+            padding: 15px;
+        }
+
+        .invalidBorder {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <label>One to one:
+            <input id="chkBoxOne" type="checkbox">
+        </label><br>
+        <input type="text" id='txtBoxOne'><br><br>
+    </div>
+    <br>
+    <hr><br>
+    <div>
+        <label>One to Many:
+            <input id="chkBoxTwo" type="checkbox">
+        </label><br>
+        <input type="text" id='txtBoxTwo'><br><br>
+        <input type="text" id='txtBoxThree'><br>
+    </div>
+    <br><br>
+    <input type="button" id="btnValidate" value="Validate Fields">
+</body>
+
+<script>
+    $(function () {
+        var validator = new ValidateRules({
+            required_text_when_check: [{
+                    sourceId: "chkBoxOne",
+                    targetIds: ["txtBoxOne"]
+                },
+                {
+                    sourceId: "chkBoxTwo",
+                    targetIds: ["txtBoxTwo", "txtBoxThree"]
+                }
+            ]
+        });
+
+        $("#btnValidate").click(function () {
+            validator.validate();
+            validator.validControlIds.forEach(function (id) {
+                $('#' + id).removeClass('invalidBorder');
+            });
+            validator.invalidControlIds.forEach(function (id) {
+                $('#' + id).addClass('invalidBorder');
+            });
+        });
+    });
+</script>
+
+</html>
