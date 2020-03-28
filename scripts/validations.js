@@ -1,53 +1,48 @@
-//this plugin might change when the full list of validation rules and patterns are p
-(function () {
+$(function () {
 
-    this.ValidateRules = function () {
-        //this is our data model, we will add rules and validations to this as needed
-        this.validationRules = {
-            required_text_when_check: [{
-                sourceId: "",
-                targetIds: []
-            }]
-        };
+    $(".performAttributeValidation").click(function () {
+        TextboxRequiredWhenCheckboxChecked();
+    });
 
-        if (arguments[0] && typeof arguments[0] === "object") {
-            //replace the empty model with user specified rules
-            this.validationRules = arguments[0];
-        }
-    }
+    function TextboxRequiredWhenCheckboxChecked() {
+        var valids = [];
+        var invalids = [];
 
-    //perform validation
-    ValidateRules.prototype.validate = function () {
-        this.invalidControlIds = [];
-        this.validControlIds = [];
-        requiredTextWhenCheckValidation.call(this);
-    }
+        var required_text_when_checks = $("[required_text_when_check]");
 
-    //we will keep on adding similar validation methods when needed.    
-    function requiredTextWhenCheckValidation() {
-        let rules = this.validationRules.required_text_when_check;
-        rules.forEach(rule => {
-            let isChecked = $('#' + rule.sourceId).is(":checked");
-            if (isChecked) {
-                rule.targetIds.forEach(targetId => {
-                    checkForControlRequiredValidity.call(this, targetId);
+        required_text_when_checks.each(function (index, element) {
+            var rules = $(element).attr("required_text_when_check");
+            rules = rules.split('_');
+
+            //must have only one checkBox (lhs) and many textboxes(rhs)
+            if (rules.length == 2) {
+                var checkBoxId = rules[0];
+                var textBoxIds = rules[1].split(',');
+                var isChecked = $("#" + checkBoxId).is(":checked");
+
+                textBoxIds.forEach(function (txtId) {
+                    var value = $("#" + txtId).val().trim();
+
+                    if (isChecked) {
+                        if (value) {
+                            $("#" + txtId).removeClass("invalidBorder");
+                            valids.push(txtId);
+                        }
+                        else {
+                            $('#' + txtId).addClass('invalidBorder');
+                            invalids.push();
+                        }
+                    }
+                    else {
+                        $("#" + txtId).removeClass("invalidBorder");
+                        valids.push(txtId);
+                    }
                 });
-            } else {
-                this.validControlIds = this.validControlIds.concat(rule.targetIds);
             }
         });
+
+        //alternatively return validation summary for controls
+        return { Valids: valids, Invalids: invalids };
     }
 
-    function checkForControlRequiredValidity(id) {
-        //call the existing common method by Ajay here
-        //i will just check the text box values here for now
-        var enteredValue = $('#' + id).val();
-        var isValid = enteredValue && enteredValue.trim();
-        if (isValid) {
-            this.validControlIds.push(id);
-        } else {
-            this.invalidControlIds.push(id);
-        }
-    }
-
-}());
+});

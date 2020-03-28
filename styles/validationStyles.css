@@ -1,0 +1,10 @@
+div {
+    border: 1px solid black;
+    width: 50%;
+    padding: 15px;
+}
+
+.invalidBorder {
+    border: 1px solid red;
+    background: yellow;
+}
