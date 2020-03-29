@@ -6,24 +6,36 @@
     <title>mandatory text box when check box group is checked</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="scripts/validations.js"></script>
-    <link rel="stylesheet" href="styles/validationStyles.css">    
+    <link rel="stylesheet" href="styles/validationStyles.css">
 </head>
 
 <body>
-    <div required_text_when_check="chkBoxOne_txtBoxOne">
-        <label>One to one:
+    <div required_text_when_check="chkBoxOne:txtBoxOne,txtBoxTwo">
+        <label>Text Box:
             <input id="chkBoxOne" type="checkbox">
         </label><br>
         <input type="text" id='txtBoxOne'><br><br>
+        <input type="text" id='txtBoxTwo'><br><br>
     </div>
     <br>
     <hr><br>
-    <div required_text_when_check="chkBoxTwo_txtBoxTwo,txtBoxThree">
-        <label>One to Many:
+    <div required_text_when_check="chkBoxTwo:txtAreaOne,txtAreaTwo">
+        <label>Text Area:
             <input id="chkBoxTwo" type="checkbox">
         </label><br>
-        <input type="text" id='txtBoxTwo'><br><br>
-        <input type="text" id='txtBoxThree'><br>
+        <textarea id="txtAreaOne" rows="4" cols="50"></textarea>
+        <textarea id="txtAreaTwo" rows="4" cols="50"></textarea>
+    </div>
+    <hr><br>
+    <div required_text_when_check="chkBoxThree:dvOne,dvTwo">
+        <label>One to Many:
+            <input id="chkBoxThree" type="checkbox">
+        </label><br>
+        <div id="dvOne" contenteditable="true">
+        </div>
+        <br>
+        <div id="dvTwo" contenteditable="true">
+        </div>
     </div>
     <br><br>
     <input type="button" id="btnValidate" value="Validate Fields" class="performAttributeValidation">
